@@ -8,6 +8,7 @@ import { ReservaLibrosController } from './controllers/reserva-libros/reserva-li
 import { AutorService } from './services/autor/autor.service';
 import { LibroService } from './services/libro/libro.service';
 import { BibliotecaService } from './services/biblioteca/biblioteca.service';
+import { ReservaLibroService } from './services/reserva-libro/reserva-libro.service';
 
 @Module({
   imports: [],
@@ -18,6 +19,12 @@ import { BibliotecaService } from './services/biblioteca/biblioteca.service';
     AutorController,
     ReservaLibrosController,
   ],
-  providers: [AppService, AutorService, LibroService, BibliotecaService],
+  providers: [
+    AppService,
+    AutorService,
+    LibroService,
+    BibliotecaService,
+    ReservaLibroService,
+  ],
 })
 export class AppModule {}

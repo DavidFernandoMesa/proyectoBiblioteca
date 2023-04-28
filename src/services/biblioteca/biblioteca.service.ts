@@ -33,6 +33,16 @@ export class BibliotecaService {
     return biblioteca;
   }
 
+  create(data: CreateBibliotecaDtos) {
+    this.counterId = this.counterId + 1;
+    const newBiblioteca = {
+      id: this.counterId,
+      ...data,
+    };
+    this.biblioteca.push(newBiblioteca);
+    return newBiblioteca;
+  }
+
   update(id: number, changes: UpdateBibliotecaDtos) {
     const biblioteca = this.findOne(id);
     const index = this.biblioteca.findIndex((item) => item.id === id);
@@ -41,5 +51,14 @@ export class BibliotecaService {
       ...changes,
     };
     return this.biblioteca[index];
+  }
+
+  delete(id: number) {
+    const index = this.biblioteca.findIndex((item) => item.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`Biblioteca #${id} not found`);
+    }
+    this.biblioteca.splice(index, 1);
+    return true;
   }
 }
