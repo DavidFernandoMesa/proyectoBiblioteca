@@ -8,11 +8,11 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { BibliotecaService } from './../../services/biblioteca/biblioteca.service';
+import { BibliotecaService } from '../services/biblioteca.service';
 import {
   CreateBibliotecaDtos,
   UpdateBibliotecaDtos,
-} from './../../dtos/biblioteca.dtos';
+} from '../dtos/biblioteca.dtos';
 
 @Controller('biblioteca')
 export class BibliotecaController {

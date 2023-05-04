@@ -8,8 +8,8 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { LibroService } from './../../services/libro/libro.service';
-import { CreateLibroDtos, UpdateLibroDtos } from './../../dtos/libro.dtos';
+import { LibroService } from '../services/libro.service';
+import { CreateLibroDtos, UpdateLibroDtos } from '../dtos/libro.dtos';
 
 @Controller('libro')
 export class LibroController {

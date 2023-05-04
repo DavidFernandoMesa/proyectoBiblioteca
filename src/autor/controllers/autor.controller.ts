@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { AutorService } from './../../services/autor/autor.service';
-import { CreateAutorDtos, UpdateAutorDtos } from './../../dtos/autor.dtos';
+import { CreateAutorDtos, UpdateAutorDtos } from '../dtos/autor.dtos';
 
 @Controller('autor')
 export class AutorController {

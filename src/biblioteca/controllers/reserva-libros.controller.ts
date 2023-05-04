@@ -8,11 +8,11 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ReservaLibroService } from '../../services/reserva-libro/reserva-libro.service';
+import { ReservaLibroService } from '../services/reserva-libro.service';
 import {
   CreateLibroReservaDtos,
   UpdateLibroReservaDtos,
-} from '../../dtos/reservaLibro.dtos';
+} from '../dtos/reservaLibro.dtos';
 
 @Controller('reserva-libros')
 export class ReservaLibrosController {

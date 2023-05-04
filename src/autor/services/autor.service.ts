@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Autor } from './../../entities/autor.entity';
-import { CreateAutorDtos, UpdateAutorDtos } from './../../dtos/autor.dtos';
+import { Autor } from '../../autor/entities/autor.entity';
+import { CreateAutorDtos, UpdateAutorDtos } from '../../autor/dtos/autor.dtos';
 
 @Injectable()
 export class AutorService {

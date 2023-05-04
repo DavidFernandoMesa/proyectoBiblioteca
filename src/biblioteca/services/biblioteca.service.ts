@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Biblioteca } from './../..//entities/biblioteca.entity';
+import { Biblioteca } from '../entities/biblioteca.entity';
 import {
   CreateBibliotecaDtos,
   UpdateBibliotecaDtos,
-} from './../../dtos/biblioteca.dtos';
+} from '../dtos/biblioteca.dtos';
 
 @Injectable()
 export class BibliotecaService {
