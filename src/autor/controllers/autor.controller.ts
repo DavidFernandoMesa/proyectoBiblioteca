@@ -8,7 +8,7 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
-import { AutorService } from './../../services/autor/autor.service';
+import { AutorService } from './../services/autor.service';
 import { CreateAutorDtos, UpdateAutorDtos } from '../dtos/autor.dtos';
 
 @Controller('autor')
