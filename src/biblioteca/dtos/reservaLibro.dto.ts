@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
-export class CreateLibroReservaDtos {
+export class CreateLibroReservaDto {
   @IsArray()
   @IsNotEmpty()
   readonly libros: [];
@@ -29,6 +29,4 @@ export class CreateLibroReservaDtos {
   readonly reservado: boolean;
 }
 
-export class UpdateLibroReservaDtos extends PartialType(
-  CreateLibroReservaDtos,
-) {}
+export class UpdateLibroReservaDto extends PartialType(CreateLibroReservaDto) {}

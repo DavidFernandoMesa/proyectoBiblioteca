@@ -1,9 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { Biblioteca } from '../entities/biblioteca.entity';
 import {
-  CreateBibliotecaDtos,
-  UpdateBibliotecaDtos,
-} from '../dtos/biblioteca.dtos';
+  CreateBibliotecaDto,
+  UpdateBibliotecaDto,
+} from '../dtos/biblioteca.dto';
+import { Autor } from 'src/autor/entities/autor.entity';
+import { Libro } from './../../autor/entities/libro.entity';
 
 @Injectable()
 export class BibliotecaService {
@@ -11,13 +14,8 @@ export class BibliotecaService {
   private biblioteca: Biblioteca[] = [
     {
       id: 1,
-      libros: [
-        'Cien años de soledad',
-        'Crónica de una muerte anunciada',
-        'El amor en los tiempos del cólera',
-        'Del amor y otros demonios',
-      ],
-      personas: ['Gabriel García Márquez', 'David Fernando Mesa'],
+      libros: [new Libro()],
+      personas: [],
     },
   ];
 
@@ -33,7 +31,7 @@ export class BibliotecaService {
     return biblioteca;
   }
 
-  create(data: CreateBibliotecaDtos) {
+  create(data: CreateBibliotecaDto) {
     this.counterId = this.counterId + 1;
     const newBiblioteca = {
       id: this.counterId,
@@ -43,7 +41,7 @@ export class BibliotecaService {
     return newBiblioteca;
   }
 
-  update(id: number, changes: UpdateBibliotecaDtos) {
+  update(id: number, changes: UpdateBibliotecaDto) {
     const biblioteca = this.findOne(id);
     const index = this.biblioteca.findIndex((item) => item.id === id);
     this.biblioteca[index] = {

@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsArray } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
-export class CreateBibliotecaDtos {
+export class CreateBibliotecaDto {
   @IsNotEmpty()
   @IsArray()
   readonly libros: [];
@@ -11,4 +11,4 @@ export class CreateBibliotecaDtos {
   readonly personas: [];
 }
 
-export class UpdateBibliotecaDtos extends PartialType(CreateBibliotecaDtos) {}
+export class UpdateBibliotecaDto extends PartialType(CreateBibliotecaDto) {}

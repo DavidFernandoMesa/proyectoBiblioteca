@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { ReservaLibroService } from '../services/reserva-libro.service';
 import {
-  CreateLibroReservaDtos,
-  UpdateLibroReservaDtos,
-} from '../dtos/reservaLibro.dtos';
+  CreateLibroReservaDto,
+  UpdateLibroReservaDto,
+} from '../dtos/reservaLibro.dto';
 
 @Controller('reserva-libros')
 export class ReservaLibrosController {
@@ -29,14 +29,14 @@ export class ReservaLibrosController {
   }
 
   @Post()
-  create(@Body() datos: CreateLibroReservaDtos) {
+  create(@Body() datos: CreateLibroReservaDto) {
     return this.reservaService.create(datos);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() datos: UpdateLibroReservaDtos,
+    @Body() datos: UpdateLibroReservaDto,
   ) {
     return this.reservaService.update(id, datos);
   }

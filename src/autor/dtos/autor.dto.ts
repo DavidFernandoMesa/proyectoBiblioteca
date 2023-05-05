@@ -1,7 +1,7 @@
-import { IsString, IsNotEmpty, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
-export class CreateAutorDtos {
+export class CreateAutorDto {
   @IsString()
   @IsNotEmpty()
   readonly nombre: string;
@@ -18,9 +18,7 @@ export class CreateAutorDtos {
   @IsNotEmpty()
   readonly genero: string;
 
-  @IsArray()
-  @IsNotEmpty()
   readonly obras_publicadas: [];
 }
 
-export class UpdateAutorDtos extends PartialType(CreateAutorDtos) {}
+export class UpdateAutorDto extends PartialType(CreateAutorDto) {}

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ReservaLibro } from '../entities/reservaLibro.entity';
 import {
-  CreateLibroReservaDtos,
-  UpdateLibroReservaDtos,
-} from '../dtos/reservaLibro.dtos';
+  CreateLibroReservaDto,
+  UpdateLibroReservaDto,
+} from '../dtos/reservaLibro.dto';
 
 @Injectable()
 export class ReservaLibroService {
@@ -11,7 +11,7 @@ export class ReservaLibroService {
   private libroReserva: ReservaLibro[] = [
     {
       id: 1,
-      libros: ['Cien años de soledad, La hojarasca'],
+      libros: [],
       persona: 'David Fernando',
       fecha_prestamo: new Date(2020, 4, 29),
       fecha_devolucion: new Date(2023, 6, 12),
@@ -31,7 +31,7 @@ export class ReservaLibroService {
     return reservaLibro;
   }
 
-  create(data: CreateLibroReservaDtos) {
+  create(data: CreateLibroReservaDto) {
     this.counterId = this.counterId + 1;
     const newReserva = {
       id: this.counterId,
@@ -41,7 +41,7 @@ export class ReservaLibroService {
     return newReserva;
   }
 
-  update(id: number, changes: UpdateLibroReservaDtos) {
+  update(id: number, changes: UpdateLibroReservaDto) {
     const reserva = this.findOne(id);
     const index = this.libroReserva.findIndex((item) => item.id === 1);
     this.libroReserva[index] = {

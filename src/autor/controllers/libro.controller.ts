@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { LibroService } from '../services/libro.service';
-import { CreateLibroDtos, UpdateLibroDtos } from '../dtos/libro.dtos';
+import { CreateLibroDto, UpdateLibroDto } from '../dtos/libro.dto';
 
 @Controller('libro')
 export class LibroController {
@@ -26,15 +26,12 @@ export class LibroController {
   }
 
   @Post()
-  create(@Body() datos: CreateLibroDtos) {
+  create(@Body() datos: CreateLibroDto) {
     return this.libroService.create(datos);
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() datos: UpdateLibroDtos,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() datos: UpdateLibroDto) {
     return this.libroService.update(id, datos);
   }
 

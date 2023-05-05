@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { BibliotecaService } from '../services/biblioteca.service';
 import {
-  CreateBibliotecaDtos,
-  UpdateBibliotecaDtos,
-} from '../dtos/biblioteca.dtos';
+  CreateBibliotecaDto,
+  UpdateBibliotecaDto,
+} from '../dtos/biblioteca.dto';
 
 @Controller('biblioteca')
 export class BibliotecaController {
@@ -31,7 +31,7 @@ export class BibliotecaController {
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() datos: UpdateBibliotecaDtos,
+    @Body() datos: UpdateBibliotecaDto,
   ) {
     return this.bibliotecaService.update(id, datos);
   }

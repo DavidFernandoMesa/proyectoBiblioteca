@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { AutorService } from './../services/autor.service';
-import { CreateAutorDtos, UpdateAutorDtos } from '../dtos/autor.dtos';
+import { CreateAutorDto, UpdateAutorDto } from '../dtos/autor.dto';
 
 @Controller('autor')
 export class AutorController {
@@ -26,15 +26,12 @@ export class AutorController {
   }
 
   @Post()
-  create(@Body() datos: CreateAutorDtos) {
+  create(@Body() datos: CreateAutorDto) {
     return this.autorService.create(datos);
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() datos: UpdateAutorDtos,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() datos: UpdateAutorDto) {
     return this.autorService.update(id, datos);
   }
 

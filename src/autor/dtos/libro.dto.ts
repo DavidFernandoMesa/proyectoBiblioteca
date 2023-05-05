@@ -1,14 +1,17 @@
-import { IsString, IsNotEmpty, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsDate, IsNumber } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
+import { Autor } from './../entities/autor.entity';
 
-export class CreateLibroDtos {
+export class CreateLibroDto {
   @IsString()
   @IsNotEmpty()
   readonly titulo: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  readonly autor: string;
+  readonly autorId: number;
+
+  readonly autor: Autor;
 
   @IsString()
   @IsNotEmpty()
@@ -31,4 +34,4 @@ export class CreateLibroDtos {
   readonly anio_publicacion: Date;
 }
 
-export class UpdateLibroDtos extends PartialType(CreateLibroDtos) {}
+export class UpdateLibroDto extends PartialType(CreateLibroDto) {}

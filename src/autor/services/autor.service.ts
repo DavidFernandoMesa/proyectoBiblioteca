@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Autor } from '../../autor/entities/autor.entity';
-import { CreateAutorDtos, UpdateAutorDtos } from '../../autor/dtos/autor.dtos';
+import { CreateAutorDto, UpdateAutorDto } from '../../autor/dtos/autor.dto';
 
 @Injectable()
 export class AutorService {
@@ -12,13 +12,7 @@ export class AutorService {
       edad: '87',
       nacionalidad: 'Colombiano',
       genero: 'Masculino',
-      obras_publicadas: [
-        'Cien años de soledad',
-        'Crónica de una muerte anunciada',
-        'El amor en los tiempos del cólera',
-        'Del amor y otros demonios',
-        'La hojarasca',
-      ],
+      obras_publicadas: [],
     },
   ];
 
@@ -34,7 +28,7 @@ export class AutorService {
     return autor;
   }
 
-  create(data: CreateAutorDtos) {
+  create(data: CreateAutorDto) {
     this.counterId = this.counterId + 1;
     const newAutor = {
       id: this.counterId,
@@ -44,7 +38,7 @@ export class AutorService {
     return newAutor;
   }
 
-  update(id: number, changes: UpdateAutorDtos) {
+  update(id: number, changes: UpdateAutorDto) {
     const autor = this.findOne(id);
     const index = this.autor.findIndex((item) => item.id === id);
     this.autor[index] = {
