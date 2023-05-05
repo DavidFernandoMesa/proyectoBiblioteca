@@ -25,6 +25,11 @@ export class LibroController {
     return this.libroService.findOne(id);
   }
 
+  @Get(':id')
+  getLibroByAutor(@Param('id', ParseIntPipe) id: number) {
+    return this.libroService.findOne(id);
+  }
+
   @Post()
   create(@Body() datos: CreateLibroDto) {
     return this.libroService.create(datos);

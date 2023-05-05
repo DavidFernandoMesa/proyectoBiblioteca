@@ -8,5 +8,6 @@ import { ReservaLibroService } from './services/reserva-libro.service';
 @Module({
   controllers: [BibliotecaController, ReservaLibrosController],
   providers: [BibliotecaService, ReservaLibroService],
+  exports: [BibliotecaService],
 })
 export class BibliotecaModule {}

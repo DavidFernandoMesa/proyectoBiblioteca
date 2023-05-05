@@ -1,10 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { Autor } from '../../autor/entities/autor.entity';
+import { BibliotecaService } from './../../biblioteca/services/biblioteca.service';
 import { CreateAutorDto, UpdateAutorDto } from '../../autor/dtos/autor.dto';
 
 @Injectable()
 export class AutorService {
   private counterId = 1;
+  constructor(private bibliotecaService: BibliotecaService) {}
   private autor: Autor[] = [
     {
       id: 1,
@@ -35,6 +38,7 @@ export class AutorService {
       ...data,
     };
     this.autor.push(newAutor);
+    this.bibliotecaService.agregarPersona(newAutor); // Agregar el nuevo autor al atributo de personas de Biblioteca
     return newAutor;
   }
 

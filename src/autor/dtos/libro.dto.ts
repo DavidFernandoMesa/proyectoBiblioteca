@@ -29,8 +29,6 @@ export class CreateLibroDto {
   @IsNotEmpty()
   readonly formato: string;
 
-  @IsDate()
-  @IsNotEmpty()
   readonly anio_publicacion: Date;
 }
 

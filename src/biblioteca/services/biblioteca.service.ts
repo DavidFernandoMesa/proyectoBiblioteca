@@ -14,13 +14,23 @@ export class BibliotecaService {
   private biblioteca: Biblioteca[] = [
     {
       id: 1,
-      libros: [new Libro()],
+      libros: [],
       personas: [],
     },
   ];
 
   findAll() {
     return this.biblioteca;
+  }
+
+  agregarLibro(libro: Libro) {
+    const biblioteca = this.biblioteca[0]; // Ya que solo hay una biblioteca
+    biblioteca.libros.push(libro);
+  }
+
+  agregarPersona(persona: Autor) {
+    const biblioteca = this.biblioteca[0];
+    biblioteca.personas.push(persona);
   }
 
   findOne(id: number) {
