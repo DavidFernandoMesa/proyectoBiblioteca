@@ -7,21 +7,15 @@ import {
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
+import { Autor } from './../../autor/entities/autor.entity';
+import { Libro } from './../../autor/entities/libro.entity';
+
 export class CreateLibroReservaDto {
-  @IsArray()
-  @IsNotEmpty()
-  readonly libros: [];
-
-  @IsString()
-  @IsNotEmpty()
-  readonly persona: string;
-
-  @IsDate()
-  @IsNotEmpty()
+  readonly id_persona: number;
+  readonly id_libros: [];
+  readonly libros: Libro[];
+  readonly persona: Autor;
   readonly fecha_prestamo: Date;
-
-  @IsDate()
-  @IsNotEmpty()
   readonly fecha_devolucion: Date;
 
   @IsBoolean()
