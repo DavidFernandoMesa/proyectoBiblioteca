@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+
+import { Client } from 'pg';
 import { Libro } from '../entities/libro.entity';
 import { AutorService } from './autor.service';
 import { BibliotecaService } from './../../biblioteca/services/biblioteca.service';
@@ -11,6 +13,7 @@ export class LibroService {
   constructor(
     private autorService: AutorService,
     private bibliotecaService: BibliotecaService,
+    @Inject('PG') private clientPg: Client,
   ) {}
   private libro: Libro[] = [
     {
@@ -104,5 +107,16 @@ export class LibroService {
     }
     this.libro.splice(index, 1);
     return true;
+  }
+
+  getLibros() {
+    return new Promise((resolve, reject) => {
+      this.clientPg.query('SELECT * FROM libro', (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res.rows);
+      });
+    });
   }
 }

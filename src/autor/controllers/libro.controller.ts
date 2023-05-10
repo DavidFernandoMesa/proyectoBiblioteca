@@ -20,6 +20,11 @@ export class LibroController {
     return this.libroService.findAll();
   }
 
+  @Get('libros')
+  GetLibros() {
+    return this.libroService.getLibros();
+  }
+
   @Get(':id')
   get(@Param('id', ParseIntPipe) id: number) {
     return this.libroService.findOne(id);
