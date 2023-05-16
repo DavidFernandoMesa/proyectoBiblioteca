@@ -8,9 +8,9 @@ export class AppService {
     return 'Hello World!';
   }
 
-  getLibros() {
+  getTaks() {
     return new Promise((resolve, reject) => {
-      this.clientPg.query('SELECT * FROM libro', (err, res) => {
+      this.clientPg.query('SELECT * FROM tasks', (err, res) => {
         if (err) {
           reject(err);
         }

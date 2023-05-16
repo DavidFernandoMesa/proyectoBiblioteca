@@ -28,11 +28,21 @@ export class BibliotecaController {
     return this.bibliotecaService.findOne(id);
   }
 
-  @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() datos: UpdateBibliotecaDto,
-  ) {
-    return this.bibliotecaService.update(id, datos);
+  @Post()
+  create(@Body() datos: CreateBibliotecaDto) {
+    return this.bibliotecaService.create(datos);
   }
+
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.bibliotecaService.remove(id);
+  }
+
+  // @Put(':id')
+  // update(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Body() datos: UpdateBibliotecaDto,
+  // ) {
+  //   return this.bibliotecaService.update(id, datos);
+  // }
 }

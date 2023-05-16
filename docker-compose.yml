@@ -17,6 +17,6 @@ services:
       - PGADMIN_DEFAULT_EMAIL=mesaariasd7@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=4289
     ports:
-      - '5051:80'
+      - '5050:80'
 volumes:
   postgres_data: {}

@@ -1,23 +1,35 @@
 import {
-  IsString,
   IsNotEmpty,
-  IsArray,
   IsDate,
   IsBoolean,
+  IsPositive,
+  IsArray,
+  IsString,
 } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
-
-import { Autor } from './../../autor/entities/autor.entity';
-import { Libro } from './../../autor/entities/libro.entity';
+import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateLibroReservaDto {
-  readonly id_persona: number;
-  readonly id_libros: [];
-  readonly libros: Libro[];
-  readonly persona: Autor;
-  readonly fecha_prestamo: Date;
-  readonly fecha_devolucion: Date;
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly idPersona: number;
 
+  @IsArray()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly idLibros: number[];
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly fecha_prestamo: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly fecha_devolucion: string;
+
+  @ApiProperty()
   @IsBoolean()
   @IsNotEmpty()
   readonly reservado: boolean;

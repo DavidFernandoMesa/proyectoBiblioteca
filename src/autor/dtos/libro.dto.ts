@@ -1,35 +1,48 @@
-import { IsString, IsNotEmpty, IsDate, IsNumber } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
-import { Autor } from './../entities/autor.entity';
+import { IsString, IsNotEmpty, IsDate, IsPositive } from 'class-validator';
+import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateLibroDto {
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   readonly titulo: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  readonly autorId: number;
-
-  readonly autor: Autor;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   readonly genero: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   readonly sinopsis: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   readonly idioma: string;
 
   @IsString()
   @IsNotEmpty()
+  @ApiProperty()
   readonly formato: string;
 
-  readonly anio_publicacion: Date;
+  @IsString()
+  @ApiProperty()
+  readonly anio_publicacion: string;
+
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly idAutor: number;
+
+  @ApiProperty()
+  readonly idReserva: number;
+
+  @IsPositive()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly idBiblioteca: number;
 }
 
 export class UpdateLibroDto extends PartialType(CreateLibroDto) {}

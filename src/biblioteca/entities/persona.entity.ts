@@ -1,30 +1,26 @@
 import {
-  Entity,
   PrimaryGeneratedColumn,
+  Entity,
   Column,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
-import { Libro } from './libro.entity';
+import { Biblioteca } from './biblioteca.entity';
+import { ReservaLibro } from './reservaLibro.entity';
 
 @Entity()
-export class Autor {
+export class Persona {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text' })
   nombre: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'text' })
   edad: string;
-
-  @Column({ type: 'varchar' })
-  nacionalidad: string;
-
-  @Column({ type: 'varchar' })
-  genero: string;
 
   @CreateDateColumn({
     type: 'timestamptz',
@@ -38,6 +34,9 @@ export class Autor {
   })
   updateAt: Date;
 
-  @OneToMany(() => Libro, (obras_publicadas) => obras_publicadas.autor)
-  obras_publicadas: Libro[];
+  @ManyToOne(() => Biblioteca, (biblioteca) => biblioteca.personas)
+  biblioteca: Biblioteca;
+
+  @OneToMany(() => ReservaLibro, (reserva) => reserva.persona)
+  reserva: ReservaLibro;
 }

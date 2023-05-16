@@ -1,40 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { Biblioteca } from '../entities/biblioteca.entity';
-import {
-  CreateBibliotecaDto,
-  UpdateBibliotecaDto,
-} from '../dtos/biblioteca.dto';
-import { Autor } from 'src/autor/entities/autor.entity';
-import { Libro } from './../../autor/entities/libro.entity';
+import { CreateBibliotecaDto } from '../dtos/biblioteca.dto';
 
 @Injectable()
 export class BibliotecaService {
-  private counterId = 1;
-  private biblioteca: Biblioteca[] = [
-    {
-      id: 1,
-      libros: [],
-      personas: [],
-    },
-  ];
+  constructor(
+    @InjectRepository(Biblioteca) private bibliotecaRep: Repository<Biblioteca>,
+  ) {}
 
   findAll() {
-    return this.biblioteca;
+    return this.bibliotecaRep.find({
+      relations: ['libros', 'personas'],
+    });
   }
 
-  agregarLibro(libro: Libro) {
-    const biblioteca = this.biblioteca[0]; // Ya que solo hay una biblioteca
-    biblioteca.libros.push(libro);
-  }
-
-  agregarPersona(persona: Autor) {
-    const biblioteca = this.biblioteca[0];
-    biblioteca.personas.push(persona);
-  }
-
-  findOne(id: number) {
-    const biblioteca = this.biblioteca.find((item) => item.id === id);
+  async findOne(id: number) {
+    const biblioteca = await this.bibliotecaRep.findOne({
+      where: { id: id },
+      relations: ['libros', 'personas'],
+    });
     if (!biblioteca) {
       throw new NotFoundException(`Biblioteca #${id} not found`);
     }
@@ -42,31 +29,11 @@ export class BibliotecaService {
   }
 
   create(data: CreateBibliotecaDto) {
-    this.counterId = this.counterId + 1;
-    const newBiblioteca = {
-      id: this.counterId,
-      ...data,
-    };
-    this.biblioteca.push(newBiblioteca);
-    return newBiblioteca;
+    const newBiblioteca = this.bibliotecaRep.create(data);
+    return this.bibliotecaRep.save(newBiblioteca);
   }
 
-  update(id: number, changes: UpdateBibliotecaDto) {
-    const biblioteca = this.findOne(id);
-    const index = this.biblioteca.findIndex((item) => item.id === id);
-    this.biblioteca[index] = {
-      ...biblioteca,
-      ...changes,
-    };
-    return this.biblioteca[index];
-  }
-
-  delete(id: number) {
-    const index = this.biblioteca.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`Biblioteca #${id} not found`);
-    }
-    this.biblioteca.splice(index, 1);
-    return true;
+  remove(id: number) {
+    return this.bibliotecaRep.delete(id);
   }
 }

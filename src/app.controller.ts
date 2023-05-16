@@ -10,8 +10,8 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('libros')
-  libros() {
-    return this.appService.getLibros();
+  @Get('tasks')
+  task() {
+    return this.appService.getTaks();
   }
 }

@@ -35,8 +35,24 @@ export class AutorController {
     return this.autorService.update(id, datos);
   }
 
+  @Put(':id/libro/:idLibro')
+  updateLibroToAutor(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('idLibro', ParseIntPipe) idLibro: number,
+  ) {
+    return this.autorService.addLibroByAutor(id, idLibro);
+  }
+
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.autorService.remove(id);
+  }
+
+  @Delete(':id/libro/:idLibro')
+  removeLibroToAutor(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('idLibro', ParseIntPipe) idLibro: number,
+  ) {
+    return this.autorService.removeLibroByAutor(id, idLibro);
   }
 }

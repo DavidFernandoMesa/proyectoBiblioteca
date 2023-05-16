@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
 } from '@nestjs/common';
+
 import { LibroService } from '../services/libro.service';
 import { CreateLibroDto, UpdateLibroDto } from '../dtos/libro.dto';
 
@@ -18,11 +19,6 @@ export class LibroController {
   @Get()
   findAll() {
     return this.libroService.findAll();
-  }
-
-  @Get('libros')
-  GetLibros() {
-    return this.libroService.getLibros();
   }
 
   @Get(':id')
