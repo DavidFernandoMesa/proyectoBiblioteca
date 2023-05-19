@@ -37,12 +37,4 @@ export class BibliotecaController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.bibliotecaService.remove(id);
   }
-
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() datos: UpdateBibliotecaDto,
-  // ) {
-  //   return this.bibliotecaService.update(id, datos);
-  // }
 }
