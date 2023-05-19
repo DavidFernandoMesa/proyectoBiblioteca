@@ -1,30 +1,29 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import configSchema from './configSchema';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BibliotecaController } from './controllers/biblioteca/biblioteca.controller';
-import { LibroController } from './controllers/libro/libro.controller';
-import { AutorController } from './controllers/autor/autor.controller';
-import { ReservaLibrosController } from './controllers/reserva-libros/reserva-libros.controller';
-import { AutorService } from './services/autor/autor.service';
-import { LibroService } from './services/libro/libro.service';
-import { BibliotecaService } from './services/biblioteca/biblioteca.service';
-import { ReservaLibroService } from './services/reserva-libro/reserva-libro.service';
+import { BibliotecaModule } from './biblioteca/biblioteca.module';
+import { AutorModule } from './autor/autor.module';
+import { DatabaseModule } from './database/database.module';
+import { enviroments } from './enviroments';
+import config from './config';
 
+@Global()
 @Module({
-  imports: [],
-  controllers: [
-    AppController,
-    BibliotecaController,
-    LibroController,
-    AutorController,
-    ReservaLibrosController,
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: enviroments[process.env.NODE_ENV] || '.env',
+      load: [config],
+      isGlobal: true,
+      validationSchema: configSchema,
+    }),
+    BibliotecaModule,
+    AutorModule,
+    DatabaseModule,
   ],
-  providers: [
-    AppService,
-    AutorService,
-    LibroService,
-    BibliotecaService,
-    ReservaLibroService,
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
