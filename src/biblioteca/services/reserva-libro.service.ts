@@ -69,16 +69,6 @@ export class ReservaLibroService {
     return this.reservaRep.save(reserva);
   }
 
-  // async addLibroByReserva(idReserva: number, idLibro: number) {
-  //   const reserva = await this.reservaRep.findOne({
-  //     where: { id: idReserva },
-  //     relations: ['libros', 'persona'],
-  //   });
-  //   const libro = await this.libroRep.findOne({ where: { id: idLibro } });
-  //   reserva.libros.push(libro);
-  //   return this.reservaRep.save(reserva);
-  // }
-
   remove(id: number) {
     return this.reservaRep.delete(id);
   }
