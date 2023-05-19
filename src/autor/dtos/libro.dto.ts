@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsDate, IsPositive } from 'class-validator';
+import { IsString, IsNotEmpty, IsPositive } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateLibroDto {

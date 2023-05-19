@@ -16,10 +16,10 @@ export class Persona {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   nombre: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar' })
   edad: string;
 
   @CreateDateColumn({

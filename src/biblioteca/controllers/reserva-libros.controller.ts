@@ -41,13 +41,13 @@ export class ReservaLibrosController {
     return this.reservaService.update(id, datos);
   }
 
-  @Put(':id/libro/:idLibro')
-  updateLibroToReserva(
-    @Param('id', ParseIntPipe) id: number,
-    @Param('idLibro', ParseIntPipe) idLibro: number,
-  ) {
-    return this.reservaService.addLibroByReserva(id, idLibro);
-  }
+  // @Put(':id/libro/:idLibro')
+  // updateLibroToReserva(
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Param('idLibro', ParseIntPipe) idLibro: number,
+  // ) {
+  //   return this.reservaService.addLibroByReserva(id, idLibro);
+  // }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
