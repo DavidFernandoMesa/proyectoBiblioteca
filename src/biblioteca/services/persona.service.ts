@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOneOptions } from 'typeorm';
+import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 import { Persona } from '../entities/persona.entity';
 import { CreatePersonaDto, UpdatePersonaDto } from '../dtos/persona.dto';
@@ -30,8 +31,14 @@ export class PersonaService {
     return persona;
   }
 
+  findByEmail(email) {
+    return this.personaRep.findOne({ where: { email } });
+  }
+
   async create(data: CreatePersonaDto) {
     const newPersona = await this.personaRep.create(data);
+    const hashPassword = await bcrypt.hash(newPersona.password, 10);
+    newPersona.password = hashPassword;
     if (data.idBiblioteca) {
       const biblioteca = await this.bibliotecaRep.findOne({
         where: { id: data.idBiblioteca },

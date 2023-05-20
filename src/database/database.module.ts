@@ -1,14 +1,15 @@
 import { Module, Global } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
+import { Client } from 'pg';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { Client } from 'pg';
-import config from './../config';
+import config from '../config';
 
-// client.query('SELECT * FROM libro', (err, res) => {
+// client.query('SELECT * FROM tasks', (err, res) => {
 //   console.error(err);
 //   console.log(res.rows);
 // });
+
 @Global()
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import config from './../config';
     {
       provide: 'PG',
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, password, host, port, dbName } = configService.postgres;
+        const { user, host, dbName, password, port } = configService.postgres;
         const client = new Client({
           user,
           host,
@@ -41,7 +42,6 @@ import config from './../config';
           password,
           port,
         });
-
         client.connect();
         return client;
       },

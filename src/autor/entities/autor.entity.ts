@@ -9,7 +9,7 @@ import {
 
 import { Libro } from './libro.entity';
 
-@Entity()
+@Entity({ name: 'autores' })
 export class Autor {
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,12 +27,14 @@ export class Autor {
   genero: string;
 
   @CreateDateColumn({
+    name: 'create_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
   @UpdateDateColumn({
+    name: 'update_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })

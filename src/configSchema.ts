@@ -1,6 +1,8 @@
 import * as Joi from 'joi';
 
 const configSchema = Joi.object({
+  API_KEY: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
   POSTGRES_DB: Joi.string().required(),
   POSTGRES_USER: Joi.string().required(),
   POSTGRES_PASSWORD: Joi.string().required(),

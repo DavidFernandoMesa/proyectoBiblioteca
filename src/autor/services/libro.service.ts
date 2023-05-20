@@ -7,7 +7,11 @@ import { Libro } from '../entities/libro.entity';
 import { AutorService } from './../services/autor.service';
 import { BibliotecaService } from './../../biblioteca/services/biblioteca.service';
 import { ReservaLibroService } from './../../biblioteca/services/reserva-libro.service';
-import { CreateLibroDto, UpdateLibroDto } from '../dtos/libro.dto';
+import {
+  CreateLibroDto,
+  UpdateLibroDto,
+  FilterLibros,
+} from '../dtos/libro.dto';
 
 @Injectable()
 @Injectable()
@@ -20,7 +24,15 @@ export class LibroService {
     @InjectRepository(Libro) private libroRep: Repository<Libro>,
   ) {}
 
-  findAll() {
+  findAll(params?: FilterLibros) {
+    if (params) {
+      const { limit, offset } = params;
+      return this.libroRep.find({
+        relations: ['autor', 'biblioteca', 'reserva'],
+        take: limit,
+        skip: offset,
+      });
+    }
     return this.libroRep.find({
       relations: ['autor', 'biblioteca', 'reserva'],
     });
