@@ -8,6 +8,7 @@ import { LibroController } from './controllers/libro.controller';
 import { Libro } from './entities/libro.entity';
 import { BibliotecaModule } from 'src/biblioteca/biblioteca.module';
 import { LibroService } from './services/libro.service';
+import { LibroResolver } from './resolver/libro.resolver';
 @Module({
   imports: [
     forwardRef(() => BibliotecaModule),
@@ -16,6 +17,7 @@ import { LibroService } from './services/libro.service';
   controllers: [AutorController, LibroController],
   providers: [
     AutorService,
+    LibroResolver,
     {
       provide: LibroService,
       useClass: LibroService,

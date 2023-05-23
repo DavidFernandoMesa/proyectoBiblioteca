@@ -8,32 +8,46 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { IsDate } from 'class-validator';
+
+import { ObjectType, Field, Int } from '@nestjs/graphql';
 
 import { Autor } from './autor.entity';
 import { ReservaLibro } from './../../biblioteca/entities/reservaLibro.entity';
 import { Biblioteca } from './../../biblioteca/entities/biblioteca.entity';
 
 @Entity({ name: 'libros' })
+@ObjectType()
 export class Libro {
   @PrimaryGeneratedColumn()
+  @Field(() => Int)
   id: number;
 
   @Column({ type: 'varchar', unique: true })
+  @Field()
   titulo: string;
 
   @Column({ type: 'varchar' })
+  @Field()
   genero: string;
 
   @Column({ type: 'text' })
+  @Field()
   sinopsis: string;
 
   @Column({ type: 'varchar' })
+  @Field()
   idioma: string;
 
   @Column({ type: 'varchar' })
+  @Field()
   formato: string;
 
   @Column({ type: 'date' })
+  @Field({
+    nullable: true,
+  })
+  @IsDate()
   anio_publicacion: Date;
 
   @Exclude()
