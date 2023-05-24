@@ -13,6 +13,7 @@ import { AutorModule } from './autor/autor.module';
 import { DatabaseModule } from './database/database.module';
 import { enviroments } from './enviroments';
 import { AuthModule } from './auth/auth.module';
+import { AuthzModule } from './authz/authz.module';
 import config from './config';
 
 @Global()
@@ -31,7 +32,7 @@ import config from './config';
     BibliotecaModule,
     AutorModule,
     DatabaseModule,
-    AuthModule,
+    AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService],

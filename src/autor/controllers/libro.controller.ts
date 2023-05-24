@@ -17,14 +17,15 @@ import {
   FilterLibros,
   UpdateLibroDto,
 } from '../dtos/libro.dto';
+import { AuthGuard } from '@nestjs/passport';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorators';
 import { Role } from 'src/auth/models/roles.model';
 
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Public()
+// @UseGuards(JwtAuthGuard, RolesGuard)
+// @Public()
 @Controller('libro')
 export class LibroController {
   constructor(private libroService: LibroService) {}
@@ -44,19 +45,22 @@ export class LibroController {
     return this.libroService.findOne(id);
   }
 
-  @Roles(Role.ADMIN, Role.AUTOR)
+  @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN, Role.AUTOR)
   @Post()
   create(@Body() datos: CreateLibroDto) {
     return this.libroService.create(datos);
   }
 
-  @Roles(Role.ADMIN, Role.AUTOR)
+  @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN, Role.AUTOR)
   @Put(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() datos: UpdateLibroDto) {
     return this.libroService.update(id, datos);
   }
 
-  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN)
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.libroService.delete(id);
