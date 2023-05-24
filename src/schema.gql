@@ -1,0 +1,28 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Libro {
+  id: Int!
+  titulo: String!
+  genero: String!
+  sinopsis: String!
+  idioma: String!
+  formato: String!
+  anio_publicacion: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  libros(params: FilterLibros!): [Libro!]!
+  HelloWord: String!
+}
+
+input FilterLibros {
+  limit: Float
+  offset: Float
+}

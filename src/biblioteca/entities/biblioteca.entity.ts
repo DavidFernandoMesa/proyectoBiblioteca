@@ -9,18 +9,20 @@ import {
 import { Libro } from './../../autor/entities/libro.entity';
 import { Persona } from './persona.entity';
 
-@Entity()
+@Entity({ name: 'bibliotecas' })
 export class Biblioteca {
   @PrimaryGeneratedColumn()
   id: number;
 
   @CreateDateColumn({
+    name: 'create_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
   @UpdateDateColumn({
+    name: 'update_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })

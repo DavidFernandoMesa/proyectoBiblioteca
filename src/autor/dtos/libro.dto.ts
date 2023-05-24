@@ -1,5 +1,13 @@
-import { IsString, IsNotEmpty, IsPositive } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsPositive,
+  IsOptional,
+  Min,
+} from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
+
+import { InputType, Field } from '@nestjs/graphql';
 
 export class CreateLibroDto {
   @IsString()
@@ -46,3 +54,16 @@ export class CreateLibroDto {
 }
 
 export class UpdateLibroDto extends PartialType(CreateLibroDto) {}
+
+@InputType()
+export class FilterLibros {
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsPositive()
+  limit?: number;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @Min(0)
+  offset?: number;
+}

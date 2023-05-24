@@ -30,6 +30,11 @@ import { Persona } from './entities/persona.entity';
       useClass: ReservaLibroService,
     },
   ],
-  exports: [BibliotecaService, TypeOrmModule, ReservaLibroService],
+  exports: [
+    BibliotecaService,
+    TypeOrmModule,
+    ReservaLibroService,
+    PersonaService,
+  ],
 })
 export class BibliotecaModule {}

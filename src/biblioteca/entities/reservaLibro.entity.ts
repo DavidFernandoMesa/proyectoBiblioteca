@@ -5,14 +5,14 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
   OneToMany,
 } from 'typeorm';
 
 import { Libro } from './../../autor/entities/libro.entity';
-import { Autor } from './../../autor/entities/autor.entity';
 import { Persona } from './persona.entity';
 
-@Entity()
+@Entity({ name: 'reservas' })
 export class ReservaLibro {
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,20 +27,23 @@ export class ReservaLibro {
   reservado: boolean;
 
   @CreateDateColumn({
+    name: 'create_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
   @UpdateDateColumn({
+    name: 'update_at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
 
-  @ManyToOne(() => Libro, (libros) => libros.reserva)
+  @OneToMany(() => Libro, (libros) => libros.reserva)
   libros: Libro[];
 
   @ManyToOne(() => Persona, (persona) => persona.reserva)
+  @JoinColumn({ name: 'persona_id' })
   persona: Persona;
 }

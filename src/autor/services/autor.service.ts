@@ -25,7 +25,7 @@ export class AutorService {
       relations: ['obras_publicadas'],
     });
     if (!autor) {
-      throw new NotFoundException(`Product #${id} not found`);
+      throw new NotFoundException(`Autor #${id} not found`);
     }
     return autor;
   }
