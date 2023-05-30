@@ -65,9 +65,7 @@ export class ReservaLibroService {
       where: { id },
       data: {
         ...restChanges, // Utilizamos el resto de los cambios (sin la propiedad persona)
-        persona: {
-          connect: { id: persona }, // Conectamos la persona utilizando el ID
-        },
+        personaId: persona, // Utilizamos personaId en lugar de persona
       },
       include: { persona: true },
     });

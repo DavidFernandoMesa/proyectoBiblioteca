@@ -58,31 +58,6 @@ export class AutorService {
     return updatedAutor;
   }
 
-  // async removeLibroByAutor(idAutor: number, idLibro: number): Promise<Autor> {
-  //   const autor = await this.prisma.autor.findUnique({
-  //     where: { id: idAutor },
-  //     include: { obras_publicadas: true },
-  //   });
-
-  //   if (!autor) {
-  //     throw new NotFoundException(`Autor #${idAutor} not found`);
-  //   }
-
-  //   const updatedObrasPublicadas = autor.obras_publicadas.filter(
-  //     (libro) => libro.id !== idLibro,
-  //   );
-
-  //   return this.prisma.autor.update({
-  //     where: { id: idAutor },
-  //     data: {
-  //       obras_publicadas: {
-  //         set: updatedObrasPublicadas.map((libro) => ({ id: libro.id })),
-  //       },
-  //     },
-  //     include: { obras_publicadas: true },
-  //   });
-  // }
-
   async addLibroByAutor(idAutor: number, idLibro: number): Promise<Autor> {
     const autor = await this.findOne(idAutor);
     const libro = await this.prisma.libro.findUnique({
