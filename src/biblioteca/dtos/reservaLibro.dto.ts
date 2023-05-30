@@ -11,23 +11,18 @@ import { PartialType, ApiProperty } from '@nestjs/swagger';
 export class CreateLibroReservaDto {
   @IsPositive()
   @IsNotEmpty()
-  @ApiProperty()
-  readonly idPersona: number;
-
-  @IsArray()
-  @IsNotEmpty()
-  @ApiProperty()
-  readonly idLibros: number[];
+  @ApiProperty({ required: false })
+  readonly persona?: number;
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  readonly fecha_prestamo: string;
+  @IsDate()
+  readonly fecha_prestamo: Date;
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  readonly fecha_devolucion: string;
+  @IsDate()
+  readonly fecha_devolucion: Date;
 
   @ApiProperty()
   @IsBoolean()

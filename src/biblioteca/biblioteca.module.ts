@@ -11,12 +11,10 @@ import { ReservaLibro } from './entities/reservaLibro.entity';
 import { PersonaController } from './controllers/persona.controller';
 import { PersonaService } from './services/persona.service';
 import { Persona } from './entities/persona.entity';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  imports: [
-    forwardRef(() => AutorModule),
-    TypeOrmModule.forFeature([Biblioteca, ReservaLibro, Persona]),
-  ],
+  imports: [forwardRef(() => AutorModule), PrismaModule],
   controllers: [
     BibliotecaController,
     ReservaLibrosController,
@@ -30,6 +28,6 @@ import { Persona } from './entities/persona.entity';
       useClass: ReservaLibroService,
     },
   ],
-  exports: [BibliotecaService, TypeOrmModule, ReservaLibroService],
+  exports: [BibliotecaService, ReservaLibroService, PersonaService],
 })
 export class BibliotecaModule {}

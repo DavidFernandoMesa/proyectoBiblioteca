@@ -7,13 +7,22 @@ import {
   Put,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ReservaLibroService } from '../services/reserva-libro.service';
 import {
   CreateLibroReservaDto,
   UpdateLibroReservaDto,
 } from '../dtos/reservaLibro.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorators';
+import { Role } from 'src/auth/models/roles.model';
 
+// @UseGuards(JwtAuthGuard, RolesGuard)
+@Public()
 @Controller('reserva-libros')
 export class ReservaLibrosController {
   constructor(private reservaService: ReservaLibroService) {}
@@ -28,11 +37,15 @@ export class ReservaLibrosController {
     return this.reservaService.findOne(id);
   }
 
+  // @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN)
   @Post()
   create(@Body() datos: CreateLibroReservaDto) {
     return this.reservaService.create(datos);
   }
 
+  // @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN)
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -41,11 +54,15 @@ export class ReservaLibrosController {
     return this.reservaService.update(id, datos);
   }
 
+  // @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.reservaService.remove(id);
   }
 
+  // @UseGuards(AuthGuard('jwt'))
+  // @Roles(Role.ADMIN)
   @Delete(':id/libro/:idLibro')
   removeLibroToReserva(
     @Param('id', ParseIntPipe) id: number,
