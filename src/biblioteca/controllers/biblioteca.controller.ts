@@ -34,14 +34,14 @@ export class BibliotecaController {
     return this.bibliotecaService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Post()
   create(@Body() datos: CreateBibliotecaDto) {
     return this.bibliotecaService.create(datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

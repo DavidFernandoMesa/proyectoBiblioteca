@@ -35,21 +35,21 @@ export class AutorController {
     return this.autorService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Post()
   create(@Body() datos: CreateAutorDto) {
     return this.autorService.create(datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Put(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() datos: UpdateAutorDto) {
     return this.autorService.update(id, datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Put(':id/libro/:idLibro')
   updateLibroToAutor(
@@ -59,14 +59,14 @@ export class AutorController {
     return this.autorService.addLibroByAutor(id, idLibro);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.autorService.remove(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id/libro/:idLibro')
   removeLibroToAutor(

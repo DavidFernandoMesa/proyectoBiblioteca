@@ -23,28 +23,28 @@ import { Role } from 'src/auth/models/roles.model';
 export class PersonaController {
   constructor(private personaService: PersonaService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Get()
   findAll() {
     return this.personaService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Get(':id')
   get(@Param('id', ParseIntPipe) id: number) {
     return this.personaService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Post()
   create(@Body() datos: CreatePersonaDto) {
     return this.personaService.create(datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Put(':id')
   update(
@@ -54,7 +54,7 @@ export class PersonaController {
     return this.personaService.update(id, datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

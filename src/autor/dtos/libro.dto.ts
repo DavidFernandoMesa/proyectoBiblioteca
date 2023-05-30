@@ -4,55 +4,68 @@ import {
   IsPositive,
   IsOptional,
   Min,
+  IsDate,
 } from 'class-validator';
-import { PartialType, ApiProperty } from '@nestjs/swagger';
+
+import { PartialType } from '@nestjs/mapped-types';
+import { ApiProperty } from '@nestjs/swagger';
 
 import { InputType, Field } from '@nestjs/graphql';
 
+@InputType()
 export class CreateLibroDto {
+  @Field()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   readonly titulo: string;
 
+  @Field()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   readonly genero: string;
 
+  @Field()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   readonly sinopsis: string;
 
+  @Field()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   readonly idioma: string;
 
+  @Field()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   readonly formato: string;
 
-  @IsString()
+  @Field()
+  @IsDate()
   @ApiProperty()
-  readonly anio_publicacion: string;
+  readonly anio_publicacion: Date;
 
+  @Field()
   @IsPositive()
-  @IsNotEmpty()
   @ApiProperty()
   readonly idAutor: number;
 
+  @Field()
+  @IsPositive()
   @ApiProperty()
   readonly idReserva: number;
 
+  @Field()
   @IsPositive()
-  @IsNotEmpty()
   @ApiProperty()
   readonly idBiblioteca: number;
 }
 
+@InputType()
 export class UpdateLibroDto extends PartialType(CreateLibroDto) {}
 
 @InputType()

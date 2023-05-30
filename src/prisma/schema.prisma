@@ -1,0 +1,96 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Biblioteca {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  // Relación con el modelo Libro
+  libros Libro[]
+
+  // Relación con el modelo Persona
+  personas Persona[]
+
+  @@map(name: "bibliotecas") // Especificar el nombre de la tabla en la base de datos
+}
+
+model Libro {
+  id                 Int           @id @default(autoincrement())
+  titulo             String        @unique
+  genero             String
+  sinopsis           String
+  idioma             String
+  formato            String
+  anio_publicacion   DateTime?
+  createAt           DateTime      @default(now())
+  updateAt           DateTime      @updatedAt
+
+  autor              Autor?         @relation(fields: [autorId], references: [id])
+  autorId            Int?
+
+  reserva            ReservaLibro? @relation(fields: [reservaId], references: [id])
+  reservaId          Int?
+  
+  biblioteca         Biblioteca    @relation(fields: [bibliotecaId], references: [id])
+  bibliotecaId       Int
+
+  @@map(name: "libros")
+}
+
+model Persona {
+  id           Int         @id @default(autoincrement())
+  nombre       String
+  edad         String
+  email        String
+  password     String
+  role         String
+  biblioteca   Biblioteca? @relation(fields: [bibliotecaId], references: [id])
+  bibliotecaId Int?
+
+  // Campos adicionales para seguimiento de tiempo de creación y actualización
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  // Relación con el modelo ReservaLibro
+  reserva ReservaLibro[]
+
+  @@map(name: "personas") // Especificar el nombre de la tabla en la base de datos
+}
+
+model Autor {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  edad         String
+  nacionalidad String
+  genero       String
+  createAt     DateTime @default(now())
+  updateAt     DateTime @updatedAt
+
+  // Relación con el modelo Libro
+  obras_publicadas Libro[]
+
+  @@map(name: "autores") // Especificar el nombre de la tabla en la base de datos
+}
+
+model ReservaLibro {
+  id                Int         @id @default(autoincrement())
+  fecha_prestamo    DateTime
+  fecha_devolucion  DateTime
+  reservado         Boolean
+  createAt          DateTime    @default(now())
+  updateAt          DateTime    @updatedAt
+
+  libros            Libro[]
+
+  persona           Persona     @relation(fields: [personaId], references: [id])
+  personaId         Int
+
+  @@map(name: "reservas")
+}

@@ -1,29 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Prisma, Persona } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-import { Persona } from '../entities/persona.entity';
 import { CreatePersonaDto, UpdatePersonaDto } from '../dtos/persona.dto';
-import { Biblioteca } from '../entities/biblioteca.entity';
 
 @Injectable()
 export class PersonaService {
-  constructor(
-    @InjectRepository(Persona) private personaRep: Repository<Persona>,
-    @InjectRepository(Biblioteca) private bibliotecaRep: Repository<Biblioteca>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.personaRep.find({
-      relations: ['biblioteca'],
+  async findAll(): Promise<Persona[]> {
+    return this.prisma.persona.findMany({
+      include: {
+        biblioteca: true,
+      },
     });
   }
 
-  async findOne(id: number) {
-    const persona = await this.personaRep.findOne({
-      where: { id: id },
-      relations: ['biblioteca'],
+  async findOne(id: number): Promise<Persona | null> {
+    const persona = await this.prisma.persona.findUnique({
+      where: { id },
+      include: {
+        biblioteca: true,
+      },
     });
     if (!persona) {
       throw new NotFoundException(`Persona #${id} not found`);
@@ -31,36 +30,80 @@ export class PersonaService {
     return persona;
   }
 
-  findByEmail(email) {
-    return this.personaRep.findOne({ where: { email } });
+  async findByEmail(email: string): Promise<Persona | null> {
+    return this.prisma.persona.findFirst({
+      where: { email: { equals: email } },
+    });
   }
 
-  async create(data: CreatePersonaDto) {
-    const newPersona = await this.personaRep.create(data);
-    const hashPassword = await bcrypt.hash(newPersona.password, 10);
-    newPersona.password = hashPassword;
-    if (data.idBiblioteca) {
-      const biblioteca = await this.bibliotecaRep.findOne({
-        where: { id: data.idBiblioteca },
-      });
-      newPersona.biblioteca = biblioteca;
+  async create(data: CreatePersonaDto): Promise<Persona> {
+    // Verificar si la biblioteca existe
+    const bibliotecaExists = await this.prisma.biblioteca.findUnique({
+      where: { id: data.biblioteca },
+    });
+
+    if (!bibliotecaExists) {
+      throw new NotFoundException(`Biblioteca #${data.biblioteca} not found`); // Lanzar un error si la biblioteca no existe
     }
-    return this.personaRep.save(newPersona);
+
+    const hashPassword = await bcrypt.hash(data.password, 10);
+    const newData: Prisma.PersonaCreateInput = {
+      nombre: data.nombre,
+      edad: data.edad,
+      email: data.email,
+      password: hashPassword,
+      role: data.role,
+      biblioteca: {
+        connect: { id: data.biblioteca },
+      },
+    };
+
+    return this.prisma.persona.create({
+      data: newData,
+    });
   }
 
-  async update(id: number, changes: UpdatePersonaDto) {
-    const persona = await this.personaRep.findOneBy({ id });
-    if (changes.idBiblioteca) {
-      const biblioteca = await this.bibliotecaRep.findOne({
-        where: { id: changes.idBiblioteca },
-      });
-      persona.biblioteca = biblioteca;
+  async update(id: number, changes: UpdatePersonaDto): Promise<Persona> {
+    const persona = await this.prisma.persona.findUnique({
+      where: { id },
+    });
+
+    if (!persona) {
+      throw new NotFoundException(`Persona #${id} not found`);
     }
-    this.personaRep.merge(persona, changes);
-    return this.personaRep.save(persona);
+
+    const updateData: Prisma.PersonaUpdateInput = {};
+
+    if (changes.biblioteca) {
+      const biblioteca = await this.prisma.biblioteca.findUnique({
+        where: { id: changes.biblioteca },
+      });
+
+      if (!biblioteca) {
+        throw new NotFoundException(
+          `Biblioteca #${changes.biblioteca} not found`,
+        );
+      }
+
+      updateData.biblioteca = {
+        connect: { id: biblioteca.id },
+      };
+    }
+
+    return this.prisma.persona.update({
+      where: { id },
+      data: {
+        ...changes,
+        biblioteca: { connect: { id: changes.biblioteca } },
+      },
+    });
   }
 
-  remove(id: number) {
-    return this.personaRep.delete(id);
+  async remove(id: number): Promise<{ message: string } | null> {
+    await this.prisma.persona.delete({
+      where: { id },
+    });
+
+    return { message: 'Se eliminó correctamente la persona.' };
   }
 }

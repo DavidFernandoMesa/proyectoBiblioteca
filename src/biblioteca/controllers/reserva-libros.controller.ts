@@ -37,14 +37,14 @@ export class ReservaLibrosController {
     return this.reservaService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Post()
   create(@Body() datos: CreateLibroReservaDto) {
     return this.reservaService.create(datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Put(':id')
   update(
@@ -54,14 +54,14 @@ export class ReservaLibrosController {
     return this.reservaService.update(id, datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.reservaService.remove(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id/libro/:idLibro')
   removeLibroToReserva(

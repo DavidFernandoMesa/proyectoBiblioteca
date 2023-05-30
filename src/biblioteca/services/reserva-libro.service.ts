@@ -1,36 +1,26 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { PrismaService } from '../../prisma/prisma.service';
+import { ReservaLibro } from '@prisma/client';
 
-import { ReservaLibro } from '../entities/reservaLibro.entity';
 import {
   CreateLibroReservaDto,
   UpdateLibroReservaDto,
 } from '../dtos/reservaLibro.dto';
 
-import { PersonaService } from './persona.service';
-import { Libro } from 'src/autor/entities/libro.entity';
-
 @Injectable()
 export class ReservaLibroService {
-  constructor(
-    private personaService: PersonaService,
-    // @InjectRepository(Libro)
-    // private libroRep: Repository<Libro>,
-    @InjectRepository(ReservaLibro)
-    private reservaRep: Repository<ReservaLibro>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.reservaRep.find({
-      relations: ['libros', 'persona'],
+  findAll(): Promise<ReservaLibro[]> {
+    return this.prisma.reservaLibro.findMany({
+      include: { libros: true, persona: true },
     });
   }
 
-  async findOne(id: number) {
-    const reservaLibro = await this.reservaRep.findOne({
-      where: { id: id },
-      relations: ['libros', 'persona'],
+  async findOne(id: number): Promise<ReservaLibro | null> {
+    const reservaLibro = await this.prisma.reservaLibro.findUnique({
+      where: { id },
+      include: { libros: true, persona: true },
     });
     if (!reservaLibro) {
       throw new NotFoundException(`Reserva #${id} not found`);
@@ -38,38 +28,75 @@ export class ReservaLibroService {
     return reservaLibro;
   }
 
-  async create(data: CreateLibroReservaDto) {
-    const newLibroReserva = this.reservaRep.create(data);
-    if (data.idPersona) {
-      const persona = await this.personaService.findOne(data.idPersona);
-      newLibroReserva.persona = persona;
+  async create(data: CreateLibroReservaDto): Promise<ReservaLibro> {
+    const fechaP = new Date(data.fecha_prestamo);
+    const fechaD = new Date(data.fecha_devolucion);
+
+    const persona = await this.prisma.persona.findUnique({
+      where: { id: data.persona },
+    });
+
+    if (!persona) {
+      throw new NotFoundException(`Persona #${data.persona} not found`);
     }
 
-    // if (data.idLibros) {
-    //   const libros = await this.libroRep.findBy({
-    //     id: In(data.idLibros),
-    //   });
-    //   newLibroReserva.libros = libros;
-    // }
-    return this.reservaRep.save(newLibroReserva);
-  }
-
-  async update(id: number, changes: UpdateLibroReservaDto) {
-    const reservaLibro = await this.reservaRep.findOneBy({ id: id });
-    this.reservaRep.merge(reservaLibro, changes);
-    return this.reservaRep.save(reservaLibro);
-  }
-
-  async removeLibroByReserva(idReserva: number, idLibro: number) {
-    const reserva = await this.reservaRep.findOne({
-      where: { id: idReserva },
-      relations: ['libros', 'persona'],
+    const newReservaLibro = await this.prisma.reservaLibro.create({
+      data: {
+        ...data,
+        fecha_prestamo: fechaP,
+        fecha_devolucion: fechaD,
+        persona: {
+          connect: { id: data.persona },
+        },
+      },
+      include: { persona: true },
     });
-    reserva.libros = reserva.libros.filter((item) => item.id !== idLibro);
-    return this.reservaRep.save(reserva);
+
+    return newReservaLibro;
   }
 
-  remove(id: number) {
-    return this.reservaRep.delete(id);
+  async update(
+    id: number,
+    changes: UpdateLibroReservaDto,
+  ): Promise<ReservaLibro> {
+    const { persona, ...restChanges } = changes; // Extraemos la propiedad persona del objeto changes
+
+    const updatedReservaLibro = await this.prisma.reservaLibro.update({
+      where: { id },
+      data: {
+        ...restChanges, // Utilizamos el resto de los cambios (sin la propiedad persona)
+        persona: {
+          connect: { id: persona }, // Conectamos la persona utilizando el ID
+        },
+      },
+      include: { persona: true },
+    });
+
+    return updatedReservaLibro;
+  }
+
+  async removeLibroByReserva(
+    idReserva: number,
+    idLibro: number,
+  ): Promise<ReservaLibro> {
+    const updatedReservaLibro = await this.prisma.reservaLibro.update({
+      where: { id: idReserva },
+      data: {
+        libros: {
+          disconnect: { id: idLibro }, // Desconectar el libro del array de libros
+        },
+      },
+      include: { persona: true },
+    });
+
+    return updatedReservaLibro;
+  }
+
+  async remove(id: number): Promise<{ message: string }> {
+    await this.prisma.reservaLibro.delete({
+      where: { id },
+    });
+
+    return { message: 'Se eliminó correctamente la reserva de libro.' };
   }
 }

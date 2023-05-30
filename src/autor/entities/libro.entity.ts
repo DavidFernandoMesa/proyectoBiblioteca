@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  JoinTable,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { IsDate } from 'class-validator';
@@ -72,6 +73,7 @@ export class Libro {
 
   @ManyToOne(() => ReservaLibro, (reserva) => reserva.libros)
   @JoinColumn({ name: 'reserva_id' })
+  @JoinTable()
   reserva: ReservaLibro;
 
   @ManyToOne(() => Biblioteca, (biblioteca) => biblioteca.libros)

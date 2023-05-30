@@ -1,26 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import { Biblioteca } from '../entities/biblioteca.entity';
-import { CreateBibliotecaDto } from '../dtos/biblioteca.dto';
+import { PrismaService } from '../../prisma/prisma.service'; // Importa el servicio de Prisma
+import { Prisma, Biblioteca } from '@prisma/client'; // Importa el modelo generado por Prisma
 
 @Injectable()
 export class BibliotecaService {
-  constructor(
-    @InjectRepository(Biblioteca) private bibliotecaRep: Repository<Biblioteca>,
-  ) {}
+  constructor(private prisma: PrismaService) {} // Inyecta el servicio de Prisma
 
-  findAll() {
-    return this.bibliotecaRep.find({
-      relations: ['libros', 'personas'],
+  async findAll(): Promise<Biblioteca[]> {
+    return this.prisma.biblioteca.findMany({
+      include: {
+        libros: true,
+        personas: true,
+      },
     });
   }
 
-  async findOne(id: number) {
-    const biblioteca = await this.bibliotecaRep.findOne({
-      where: { id: id },
-      relations: ['libros', 'personas'],
+  async findOne(id: number): Promise<Biblioteca | null> {
+    const biblioteca = await this.prisma.biblioteca.findUnique({
+      where: { id },
+      include: {
+        libros: true,
+        personas: true,
+      },
     });
     if (!biblioteca) {
       throw new NotFoundException(`Biblioteca #${id} not found`);
@@ -28,12 +29,19 @@ export class BibliotecaService {
     return biblioteca;
   }
 
-  create(data: CreateBibliotecaDto) {
-    const newBiblioteca = this.bibliotecaRep.create(data);
-    return this.bibliotecaRep.save(newBiblioteca);
+  async create(data: Prisma.BibliotecaCreateInput): Promise<Biblioteca> {
+    return this.prisma.biblioteca.create({
+      data,
+    });
   }
 
-  remove(id: number) {
-    return this.bibliotecaRep.delete(id);
+  async remove(id: number): Promise<{ message: string } | null> {
+    const deletedBiblioteca = await this.prisma.biblioteca.delete({
+      where: { id },
+    });
+
+    if (deletedBiblioteca) {
+      return { message: 'Se eliminó correctamente la biblioteca.' };
+    }
   }
 }

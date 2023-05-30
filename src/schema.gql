@@ -19,10 +19,28 @@ scalar DateTime
 
 type Query {
   libros(params: FilterLibros!): [Libro!]!
+  libro(id: Int!): Libro!
   HelloWord: String!
 }
 
 input FilterLibros {
   limit: Float
   offset: Float
+}
+
+type Mutation {
+  crearLibro(input: CreateLibroDto!): Libro!
+  eliminarLibro(id: Int!): Libro!
+}
+
+input CreateLibroDto {
+  titulo: String!
+  genero: String!
+  sinopsis: String!
+  idioma: String!
+  formato: String!
+  anio_publicacion: DateTime!
+  idAutor: Float!
+  idReserva: Float!
+  idBiblioteca: Float!
 }

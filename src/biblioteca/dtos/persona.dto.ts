@@ -7,10 +7,7 @@ import {
 } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
-import { CreateBibliotecaDto } from './biblioteca.dto';
-
 export class CreatePersonaDto {
-  readonly biblioteca: CreateBibliotecaDto;
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
@@ -39,7 +36,7 @@ export class CreatePersonaDto {
   @IsNotEmpty()
   @IsPositive()
   @ApiProperty()
-  readonly idBiblioteca: number;
+  readonly biblioteca: number;
 }
 
 export class UpdatePersonaDto extends PartialType(CreatePersonaDto) {}

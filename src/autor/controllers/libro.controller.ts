@@ -45,21 +45,21 @@ export class LibroController {
     return this.libroService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN, Role.AUTOR)
   @Post()
   create(@Body() datos: CreateLibroDto) {
     return this.libroService.create(datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN, Role.AUTOR)
   @Put(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() datos: UpdateLibroDto) {
     return this.libroService.update(id, datos);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   // @Roles(Role.ADMIN)
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
